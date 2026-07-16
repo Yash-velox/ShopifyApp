@@ -1,0 +1,68 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+#
+# Tunneling (Retention Hub shape) — current local session:
+# - Frontend (React UI)  → ngrok        → application_url
+# - Backend (FastAPI)    → Cloudflare   → app_proxy.url + VITE_API_BASE_URL
+#
+# Quick tunnels change every restart. Re-run tunnels and update these URLs when they die.
+# With automatically_update_urls_on_dev = false, `shopify app dev` will NOT overwrite them.
+
+client_id = "438cdbda81ca06acd817775568e9d5ff"
+name = "Image-Enhancement"
+application_url = "https://aundrea-semiacidic-erlene.ngrok-free.dev"
+embedded = true
+
+[access_scopes]
+# Start with products; expand for files/images when wiring SOW features
+scopes = "write_products,read_products,write_files,read_files,write_metaobjects,write_metaobject_definitions"
+
+[product.metafields.app.demo_info]
+type = "single_line_text_field"
+name = "Demo Source Info"
+description = "Tracks products created by the Shopify app template for development"
+
+  [product.metafields.app.demo_info.access]
+  admin = "merchant_read_write"
+
+[metaobjects.app.example]
+name = "Example"
+description = "An example metaobject definition created by this template"
+
+  [metaobjects.app.example.access]
+  admin = "merchant_read_write"
+
+[metaobjects.app.example.fields.title]
+name = "Title"
+type = "single_line_text_field"
+required = true
+
+[metaobjects.app.example.fields.description]
+name = "Description"
+type = "multi_line_text_field"
+
+[webhooks]
+api_version = "2026-10"
+
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/app/uninstalled"
+  topics = [ "app/uninstalled" ]
+
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/app/scopes_update"
+  topics = [ "app/scopes_update" ]
+
+[auth]
+redirect_urls = [
+  "https://aundrea-semiacidic-erlene.ngrok-free.dev/auth/callback",
+  "https://aundrea-semiacidic-erlene.ngrok-free.dev/auth/shopify/callback",
+  "https://aundrea-semiacidic-erlene.ngrok-free.dev/api/auth/callback"
+]
+
+# App proxy → FastAPI backend (Cloudflare quick tunnel)
+[app_proxy]
+url = "https://personals-widescreen-innocent-vocals.trycloudflare.com"
+subpath = "image-enhancement"
+prefix = "apps"
+
+[build]
+automatically_update_urls_on_dev = false

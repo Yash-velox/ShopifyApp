@@ -19,12 +19,13 @@ export default function App() {
     <AppProvider embedded apiKey={apiKey}>
       {/* Shows under Apps → Image-Enhancement in Admin sidebar */}
       <s-app-nav>
-        <s-link href="/app" rel="home">
+        <s-link href="/app">
           Home
         </s-link>
         <s-link href="/app/products">Products</s-link>
         <s-link href="/app/jobs">Jobs</s-link>
         <s-link href="/app/settings">Settings</s-link>
+        <s-link href="/app/poc">POC</s-link>
       </s-app-nav>
       <Outlet />
     </AppProvider>

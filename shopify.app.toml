@@ -51,6 +51,10 @@ api_version = "2026-10"
   uri = "/webhooks/app/scopes_update"
   topics = [ "app/scopes_update" ]
 
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/products/update"
+  topics = [ "products/update" ]
+
 [auth]
 redirect_urls = [
   "https://aundrea-semiacidic-erlene.ngrok-free.dev/auth/callback",
@@ -60,7 +64,7 @@ redirect_urls = [
 
 # App proxy → FastAPI backend (Cloudflare quick tunnel)
 [app_proxy]
-url = "https://personals-widescreen-innocent-vocals.trycloudflare.com"
+url = "https://poet-roster-potter-facial.trycloudflare.com"
 subpath = "image-enhancement"
 prefix = "apps"
 

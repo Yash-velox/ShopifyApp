@@ -23,6 +23,7 @@ export default function App() {
           Home
         </s-link>
         <s-link href="/app/products">Products</s-link>
+        <s-link href="/app/products/versions">Versions</s-link>
         <s-link href="/app/jobs">Jobs</s-link>
         <s-link href="/app/prompts">Prompts</s-link>
         <s-link href="/app/settings">Settings</s-link>

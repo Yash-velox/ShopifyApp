@@ -1,3 +1,5 @@
+# Environment profile: Image-Enhancement-Prod
+# Fill client_id with this Partner app's Client ID, then run: bash scripts/switch-app-env.sh
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 #
 # Tunneling (Retention Hub shape) — current local session:
@@ -7,9 +9,9 @@
 # Quick tunnels change every restart. Re-run tunnels and update these URLs when they die.
 # With automatically_update_urls_on_dev = false, `shopify app dev` will NOT overwrite them.
 
-client_id = "438cdbda81ca06acd817775568e9d5ff"
-name = "Image-Enhancement-Local"
-application_url = "https://aundrea-semiacidic-erlene.ngrok-free.dev"
+client_id = "REPLACE_WITH_PROD_CLIENT_ID"
+name = "Image-Enhancement-Prod"
+application_url = "https://your-prod-frontend.example.com"
 embedded = true
 
 [access_scopes]
@@ -57,14 +59,14 @@ api_version = "2026-10"
 
 [auth]
 redirect_urls = [
-  "https://aundrea-semiacidic-erlene.ngrok-free.dev/auth/callback",
-  "https://aundrea-semiacidic-erlene.ngrok-free.dev/auth/shopify/callback",
-  "https://aundrea-semiacidic-erlene.ngrok-free.dev/api/auth/callback"
+  "https://your-prod-frontend.example.com/auth/callback",
+  "https://your-prod-frontend.example.com/auth/shopify/callback",
+  "https://your-prod-frontend.example.com/api/auth/callback"
 ]
 
 # App proxy → FastAPI backend (Cloudflare quick tunnel)
 [app_proxy]
-url = "https://reach-cement-payday-dubai.trycloudflare.com"
+url = "https://your-prod-backend.example.com"
 subpath = "image-enhancement"
 prefix = "apps"
 

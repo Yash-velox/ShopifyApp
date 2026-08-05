@@ -7,6 +7,7 @@ import {
 import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
 import { createHmac } from "node:crypto";
 import prisma from "./db.server";
+import { getAbsoluteBackendUrl } from "./services/backendUrl.server";
 
 async function forwardInstallHandoff(session: {
   shop: string;
@@ -18,11 +19,11 @@ async function forwardInstallHandoff(session: {
 }) {
   if (session.isOnline) return;
 
-  const backendUrl = process.env.BACKEND_URL || process.env.VITE_API_BASE_URL;
+  const backendUrl = getAbsoluteBackendUrl();
   const secret = process.env.INTERNAL_HANDOFF_SECRET;
   if (!backendUrl || !secret) {
     console.error(
-      "Install handoff skipped: BACKEND_URL/VITE_API_BASE_URL or INTERNAL_HANDOFF_SECRET missing",
+      "Install handoff skipped: absolute BACKEND_URL or INTERNAL_HANDOFF_SECRET missing",
     );
     return;
   }

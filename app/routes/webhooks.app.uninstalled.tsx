@@ -2,12 +2,15 @@ import type { ActionFunctionArgs } from "react-router";
 import { createHmac } from "node:crypto";
 import { authenticate } from "../shopify.server";
 import db from "../db.server";
+import { getAbsoluteBackendUrl } from "../services/backendUrl.server";
 
 async function forwardUninstall(shop: string) {
-  const backendUrl = process.env.BACKEND_URL || process.env.VITE_API_BASE_URL;
+  const backendUrl = getAbsoluteBackendUrl();
   const secret = process.env.INTERNAL_HANDOFF_SECRET;
   if (!backendUrl || !secret) {
-    console.error("Uninstall handoff skipped: missing BACKEND_URL or INTERNAL_HANDOFF_SECRET");
+    console.error(
+      "Uninstall handoff skipped: absolute BACKEND_URL or INTERNAL_HANDOFF_SECRET missing",
+    );
     return;
   }
   const body = JSON.stringify({ shop });

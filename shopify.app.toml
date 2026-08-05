@@ -3,7 +3,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 #
 # Tunneling (Retention Hub shape) — current local session:
-# - Frontend (React UI)  → ngrok        → application_url
+# - Frontend (React UI)  → Cloudflare  → application_url
 # - Backend (FastAPI)    → Cloudflare   → app_proxy.url + products/update webhook
 #
 # products/update uses an absolute Backend URL (Shopify HMAC → /internal/webhooks/products-update).
@@ -13,7 +13,7 @@
 
 client_id = "65b3b854ab6b0345b1848f08e2b92149"
 name = "Image-Enhancement-UAT"
-application_url = "https://aundrea-semiacidic-erlene.ngrok-free.dev"
+application_url = "https://overcome-witch-presented-title.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -56,19 +56,19 @@ api_version = "2026-10"
   topics = [ "app/scopes_update" ]
 
   [[webhooks.subscriptions]]
-  uri = "https://broad-privileges-priority-diamonds.trycloudflare.com/internal/webhooks/products-update"
+  uri = "https://social-unwrap-hours-paso.trycloudflare.com/internal/webhooks/products-update"
   topics = [ "products/update" ]
 
 [auth]
 redirect_urls = [
-  "https://aundrea-semiacidic-erlene.ngrok-free.dev/auth/callback",
-  "https://aundrea-semiacidic-erlene.ngrok-free.dev/auth/shopify/callback",
-  "https://aundrea-semiacidic-erlene.ngrok-free.dev/api/auth/callback"
+  "https://overcome-witch-presented-title.trycloudflare.com/auth/callback",
+  "https://overcome-witch-presented-title.trycloudflare.com/auth/shopify/callback",
+  "https://overcome-witch-presented-title.trycloudflare.com/api/auth/callback"
 ]
 
 # App proxy → FastAPI backend (Cloudflare quick tunnel)
 [app_proxy]
-url = "https://broad-privileges-priority-diamonds.trycloudflare.com"
+url = "https://social-unwrap-hours-paso.trycloudflare.com"
 subpath = "image-enhancement"
 prefix = "apps"
 

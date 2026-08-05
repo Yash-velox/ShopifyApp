@@ -1,14 +1,17 @@
 import type { ActionFunctionArgs } from "react-router";
 import { createHmac } from "node:crypto";
 import { authenticate } from "../shopify.server";
+import { getAbsoluteBackendUrl } from "../services/backendUrl.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const { shop, topic, payload, webhookId } = await authenticate.webhook(request);
 
-  const backendUrl = process.env.BACKEND_URL || process.env.VITE_API_BASE_URL;
+  const backendUrl = getAbsoluteBackendUrl();
   const secret = process.env.INTERNAL_HANDOFF_SECRET;
   if (!backendUrl || !secret) {
-    console.error("products/update forward skipped: missing BACKEND_URL or INTERNAL_HANDOFF_SECRET");
+    console.error(
+      "products/update forward skipped: absolute BACKEND_URL or INTERNAL_HANDOFF_SECRET missing",
+    );
     return new Response();
   }
 

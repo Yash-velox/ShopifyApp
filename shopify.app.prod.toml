@@ -4,10 +4,9 @@
 #
 # Tunneling (Retention Hub shape) — current local session:
 # - Frontend (React UI)  → ngrok        → application_url
-# - Backend (FastAPI)    → Cloudflare   → app_proxy.url + products/update webhook
+# - Backend (FastAPI)    → Cloudflare   → app_proxy.url + VITE_API_BASE_URL
 #
-# products/update uses an absolute Backend URL (Shopify HMAC → /internal/webhooks/products-update).
-# Relative /webhooks/* would hit ReactFrontend via application_url and 404.
+# Quick tunnels change every restart. Re-run tunnels and update these URLs when they die.
 # With automatically_update_urls_on_dev = false, `shopify app dev` will NOT overwrite them.
 
 client_id = "REPLACE_WITH_PROD_CLIENT_ID"
@@ -55,7 +54,7 @@ api_version = "2026-10"
   topics = [ "app/scopes_update" ]
 
   [[webhooks.subscriptions]]
-  uri = "https://your-prod-backend.example.com/internal/webhooks/products-update"
+  uri = "/webhooks/products/update"
   topics = [ "products/update" ]
 
 [auth]

@@ -21,7 +21,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     webhookId: webhookId ?? request.headers.get("x-shopify-webhook-id"),
     payload,
   });
-  const ts = String(Date.now());
+  // Backend verify_internal_signature expects Unix seconds (not Date.now() ms).
+  const ts = String(Math.floor(Date.now() / 1000));
   const sig = createHmac("sha256", secret).update(`${ts}.${body}`).digest("hex");
 
   try {

@@ -14,7 +14,8 @@ async function forwardUninstall(shop: string) {
     return;
   }
   const body = JSON.stringify({ shop });
-  const ts = String(Date.now());
+  // Backend verify_internal_signature expects Unix seconds (not Date.now() ms).
+  const ts = String(Math.floor(Date.now() / 1000));
   const sig = createHmac("sha256", secret).update(`${ts}.${body}`).digest("hex");
   const res = await fetch(`${backendUrl.replace(/\/$/, "")}/internal/shops/uninstall`, {
     method: "POST",

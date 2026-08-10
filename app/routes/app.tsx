@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import type { HeadersFunction, LoaderFunctionArgs } from "react-router";
-import { Outlet, useLoaderData, useRouteError } from "react-router";
+import { Outlet, useLoaderData, useNavigate, useRouteError } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { AppProvider } from "@shopify/shopify-app-react-router/react";
 
 import { authenticate } from "../shopify.server";
+import { registerAppNavigate } from "../../../../ReactFrontend/src/utils/routes";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   await authenticate.admin(request);
@@ -14,6 +16,14 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function App() {
   const { apiKey } = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    registerAppNavigate((to) => {
+      navigate(to);
+    });
+    return () => registerAppNavigate(null);
+  }, [navigate]);
 
   return (
     <AppProvider embedded apiKey={apiKey}>
@@ -23,11 +33,10 @@ export default function App() {
           Home
         </s-link>
         <s-link href="/app/products">Products</s-link>
-        <s-link href="/app/products/versions">Versions</s-link>
-        <s-link href="/app/jobs">Jobs</s-link>
         <s-link href="/app/prompts">Prompts</s-link>
+        <s-link href="/app/jobs">Jobs</s-link>
+        <s-link href="/app/products/versions">Versions</s-link>
         <s-link href="/app/settings">Settings</s-link>
-        <s-link href="/app/poc">POC</s-link>
       </s-app-nav>
       <Outlet />
     </AppProvider>

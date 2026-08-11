@@ -2,18 +2,13 @@
 # Fill client_id with this Partner app's Client ID, then run: bash scripts/switch-app-env.sh
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 #
-# Tunneling (Retention Hub shape) — current local session:
-# - Frontend (React UI)  → Cloudflare  → application_url
-# - Backend (FastAPI)    → Cloudflare   → app_proxy.url + products/update webhook
-#
-# products/update uses an absolute Backend URL (Shopify HMAC → /internal/webhooks/products-update).
-# Relative /webhooks/* would hit ReactFrontend via application_url and 404.
-# Quick tunnels change every restart — `dev-all.sh` refreshes URLs via update-tunnel-urls.py + deploy.
-# With automatically_update_urls_on_dev = false, `shopify app dev` will NOT overwrite them.
+# AWS UAT: domain HTTPS → nginx → Node :3000; browser APIs via same-origin /backend-api.
+# Prefer relative /webhooks/* so they hit Node on the app host (Node forwards to FastAPI).
+# Public host: https://aiapp-uat.aonegnd.com (no ngrok / Cloudflare).
 
 client_id = "65b3b854ab6b0345b1848f08e2b92149"
 name = "Image-Enhancement-UAT"
-application_url = "https://overcome-witch-presented-title.trycloudflare.com"
+application_url = "https://aiapp-uat.aonegnd.com"
 embedded = true
 
 [access_scopes]
@@ -56,19 +51,19 @@ api_version = "2026-10"
   topics = [ "app/scopes_update" ]
 
   [[webhooks.subscriptions]]
-  uri = "https://social-unwrap-hours-paso.trycloudflare.com/internal/webhooks/products-update"
+  uri = "/webhooks/products/update"
   topics = [ "products/update" ]
 
 [auth]
 redirect_urls = [
-  "https://overcome-witch-presented-title.trycloudflare.com/auth/callback",
-  "https://overcome-witch-presented-title.trycloudflare.com/auth/shopify/callback",
-  "https://overcome-witch-presented-title.trycloudflare.com/api/auth/callback"
+  "https://aiapp-uat.aonegnd.com/auth/callback",
+  "https://aiapp-uat.aonegnd.com/auth/shopify/callback",
+  "https://aiapp-uat.aonegnd.com/api/auth/callback"
 ]
 
-# App proxy → FastAPI backend (Cloudflare quick tunnel)
+# Optional app proxy; primary UI APIs use /backend-api on the same app host.
 [app_proxy]
-url = "https://social-unwrap-hours-paso.trycloudflare.com"
+url = "https://aiapp-uat.aonegnd.com"
 subpath = "image-enhancement"
 prefix = "apps"
 

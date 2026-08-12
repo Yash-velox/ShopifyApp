@@ -6,6 +6,15 @@ import { getAbsoluteBackendUrl } from "../services/backendUrl.server";
 export const action = async ({ request }: ActionFunctionArgs) => {
   const { shop, topic, payload, webhookId } = await authenticate.webhook(request);
 
+  // Emergency shed: keep Admin responsive during products/update storms.
+  // Set SKIP_PRODUCTS_UPDATE_BACKEND_FORWARD=1 on UAT to ack Shopify without hitting FastAPI.
+  if (process.env.SKIP_PRODUCTS_UPDATE_BACKEND_FORWARD === "1") {
+    console.warn(
+      "products/update forward skipped: SKIP_PRODUCTS_UPDATE_BACKEND_FORWARD=1",
+    );
+    return new Response();
+  }
+
   const backendUrl = getAbsoluteBackendUrl();
   const secret = process.env.INTERNAL_HANDOFF_SECRET;
   if (!backendUrl || !secret) {

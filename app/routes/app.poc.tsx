@@ -8,7 +8,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return null;
 };
 
-/** POC UI removed — keep route so old bookmarks do not 404. */
+/** POC UI removed - keep route so old bookmarks do not 404. */
 export default function Poc() {
   return <Navigate to="/app" replace />;
 }

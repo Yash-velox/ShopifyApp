@@ -34,6 +34,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const ts = String(Math.floor(Date.now() / 1000));
   const sig = createHmac("sha256", secret).update(`${ts}.${body}`).digest("hex");
 
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 8_000);
   try {
     const res = await fetch(
       `${backendUrl.replace(/\/$/, "")}/internal/webhooks/products-update`,
@@ -48,6 +50,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
           "X-Shopify-Topic": topic,
         },
         body,
+        signal: controller.signal,
       },
     );
     if (!res.ok) {
@@ -55,6 +58,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     }
   } catch (err) {
     console.error("products/update forward error", err);
+  } finally {
+    clearTimeout(timer);
   }
 
   return new Response();

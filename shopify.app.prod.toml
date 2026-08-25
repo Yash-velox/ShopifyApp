@@ -1,21 +1,13 @@
 # Environment profile: Image-Enhancement-Prod
-# Fill client_id with this Partner app's Client ID, then run: bash scripts/switch-app-env.sh
-# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
-#
-# Tunneling (Retention Hub shape) — current local session:
-# - Frontend (React UI)  → ngrok        → application_url
-# - Backend (FastAPI)    → Cloudflare   → app_proxy.url + VITE_API_BASE_URL
-#
-# Quick tunnels change every restart. Re-run tunnels and update these URLs when they die.
-# With automatically_update_urls_on_dev = false, `shopify app dev` will NOT overwrite them.
+# Public host: https://aiapp.aonegnd.com (nginx + Let's Encrypt → Node :3000).
+# Prefer relative /webhooks/* so they hit Node on the app host (Node forwards to FastAPI).
 
-client_id = "REPLACE_WITH_PROD_CLIENT_ID"
+client_id = "fa031d04375a4bfc4791e96db549ee17"
 name = "Image-Enhancement-Prod"
-application_url = "https://your-prod-frontend.example.com"
+application_url = "https://aiapp.aonegnd.com"
 embedded = true
 
 [access_scopes]
-# Start with products; expand for files/images when wiring SOW features
 scopes = "write_products,read_products,write_files,read_files,write_metaobjects,write_metaobject_definitions"
 
 [product.metafields.app.demo_info]
@@ -63,14 +55,14 @@ api_version = "2026-10"
 
 [auth]
 redirect_urls = [
-  "https://your-prod-frontend.example.com/auth/callback",
-  "https://your-prod-frontend.example.com/auth/shopify/callback",
-  "https://your-prod-frontend.example.com/api/auth/callback"
+  "https://aiapp.aonegnd.com/auth/callback",
+  "https://aiapp.aonegnd.com/auth/shopify/callback",
+  "https://aiapp.aonegnd.com/api/auth/callback"
 ]
 
-# App proxy → FastAPI backend (Cloudflare quick tunnel)
+# Optional app proxy; primary UI APIs use /backend-api on the same app host.
 [app_proxy]
-url = "https://your-prod-backend.example.com"
+url = "https://aiapp.aonegnd.com"
 subpath = "image-enhancement"
 prefix = "apps"
 

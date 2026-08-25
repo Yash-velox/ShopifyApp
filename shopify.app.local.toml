@@ -55,6 +55,10 @@ api_version = "2026-10"
   uri = "/webhooks/products/update"
   topics = [ "products/update" ]
 
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/products/create"
+  topics = [ "products/create" ]
+
 [auth]
 redirect_urls = [
   "https://aundrea-semiacidic-erlene.ngrok-free.dev/auth/callback",

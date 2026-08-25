@@ -11,15 +11,15 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   // Emergency shed: ack Shopify without hitting FastAPI.
   if (shouldSkipProductsWebhookForward()) {
     console.warn(
-      "products/update forward skipped: SKIP_PRODUCTS_UPDATE_BACKEND_FORWARD=1",
+      "products/create forward skipped: SKIP_PRODUCTS_UPDATE_BACKEND_FORWARD=1",
     );
     return new Response();
   }
 
-  // ACK Shopify immediately. FastAPI enqueue + workers run off this request.
+  // ACK Shopify immediately. Same Backend intake as products/update (topic preserved).
   forwardProductWebhook({
     shop,
-    topic: topic || "products/update",
+    topic: topic || "products/create",
     webhookId: webhookId ?? null,
     payload,
     shopifyWebhookIdHeader: request.headers.get("x-shopify-webhook-id") ?? "",

@@ -4,10 +4,10 @@
 #
 # Tunneling (Retention Hub shape) — current local session:
 # - Frontend (React UI)  → Cloudflare  → application_url
-# - Backend (FastAPI)    → Cloudflare   → app_proxy.url + products/update webhook
+# - Backend (FastAPI)    → Cloudflare   → app_proxy.url + products create/update webhooks
 #
-# products/update uses an absolute Backend URL (Shopify HMAC → /internal/webhooks/products-update).
-# Relative /webhooks/* would hit ReactFrontend via application_url and 404.
+# Product webhooks: prefer relative /webhooks/products/* on the app host (Node HMAC → FastAPI).
+# Local quick-tunnel override may point products/update at absolute Backend URL.
 # Quick tunnels change every restart — `dev-all.sh` refreshes URLs via update-tunnel-urls.py + deploy.
 # With automatically_update_urls_on_dev = false, `shopify app dev` will NOT overwrite them.
 
@@ -58,6 +58,11 @@ api_version = "2026-10"
   [[webhooks.subscriptions]]
   uri = "https://social-unwrap-hours-paso.trycloudflare.com/internal/webhooks/products-update"
   topics = [ "products/update" ]
+
+  # Same FastAPI intake as update; topic comes from X-Shopify-Topic / body.
+  [[webhooks.subscriptions]]
+  uri = "https://social-unwrap-hours-paso.trycloudflare.com/internal/webhooks/products-update"
+  topics = [ "products/create" ]
 
 [auth]
 redirect_urls = [

@@ -28,21 +28,25 @@ export default function Auth() {
 
   return (
     <AppProvider embedded={false}>
-      <s-page>
-        <Form method="post">
-        <s-section heading="Log in">
-          <s-text-field
-            name="shop"
-            label="Shop domain"
-            details="example.myshopify.com"
-            value={shop}
-            onChange={(e) => setShop(e.currentTarget.value)}
-            autocomplete="on"
-            error={errors.shop}
-          ></s-text-field>
-          <s-button type="submit">Log in</s-button>
+      <s-page heading="Aone Image Enhancement">
+        <s-section heading="Sign in to your store">
+          <s-paragraph>
+            Enter your Shopify store domain to open the app. Access is limited to
+            authorized users on your team.
+          </s-paragraph>
+          <Form method="post">
+            <s-text-field
+              name="shop"
+              label="Store domain"
+              details="Example: your-store.myshopify.com"
+              value={shop}
+              onChange={(e) => setShop(e.currentTarget.value)}
+              autocomplete="on"
+              error={errors.shop}
+            ></s-text-field>
+            <s-button type="submit">Continue to Shopify</s-button>
+          </Form>
         </s-section>
-        </Form>
       </s-page>
     </AppProvider>
   );
